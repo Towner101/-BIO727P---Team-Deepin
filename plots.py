@@ -1,6 +1,8 @@
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 import seaborn as sns 
+import numpy as np
+import pandas as pd
 
 # Separate the gene expression data and the population labels
 X = merged_data.drop(metadata.columns, axis=1)
