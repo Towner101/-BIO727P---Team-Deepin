@@ -6,16 +6,14 @@ import umap
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Replace the below connection string with your actual database connection details
 # For SQLite: 'sqlite:///your_database_name.db'
 # For MySQL: 'mysql+pymysql://user:password@hostname/database_name'
-# For PostgreSQL: 'postgresql://user:password@hostname/database_name'
-db_connection_str = 'your_database_connection_string_here'
+db_connection_str = 'database_connection_string'
 
 # Creating a database engine
 db_engine = create_engine(db_connection_str)
 
-# SQL query to select data (adjust the query according to your database schema)
+# SQL query to select data - needs adjusting
 sql_query = """
 SELECT * FROM your_table_name WHERE Population IN ('Population1', 'Population2');
 """
@@ -23,9 +21,8 @@ SELECT * FROM your_table_name WHERE Population IN ('Population1', 'Population2')
 # Loading data from the SQL database
 data = pd.read_sql(sql_query, db_engine)
 
-# Assuming 'data' now contains both Siberian and 1000 Genomes data similar to 'merged_data' in your original code
 # Separate the gene expression data and the population labels
-X = data.drop(['Population', 'Superpopulation'], axis=1)  # Adjust column names as needed
+X = data.drop(['Population', 'Superpopulation'], axis=1)  # Adjust column names when needed
 y = data['Population']  # Use 'Superpopulation' if needed for clustering
 
 ### PCA ###
@@ -41,13 +38,15 @@ variance_ratio = pca.explained_variance_ratio_
 pca_df = pd.DataFrame(data=principalComponents, columns=['PC1', 'PC2'])
 pca_df['Population'] = y.values  # Use 'Superpopulation' if needed
 
-# Plotting
+# Save PCA plot
 plt.figure(figsize=(10, 8))
 sns.scatterplot(x='PC1', y='PC2', hue='Population', data=pca_df)
 plt.title(f'PCA of Gene Expression Data\nPC1 explains {variance_ratio[0]*100:.2f}% variance, PC2 explains {variance_ratio[1]*100:.2f}% variance')
 plt.xlabel(f'Principal Component 1 ({variance_ratio[0]*100:.2f}%)')
 plt.ylabel(f'Principal Component 2 ({variance_ratio[1]*100:.2f}%)')
-plt.show()
+plt.savefig('static/pca_plot.png')  # Save to static directory
+plt.close()  # Close the plot to free memory
+
 
 ### MDS ###
 
@@ -65,7 +64,8 @@ sns.scatterplot(x='MDS1', y='MDS2', hue='Population', data=mds_df)
 plt.title('MDS Analysis of Gene Expression Data')
 plt.xlabel('MDS Component 1')
 plt.ylabel('MDS Component 2')
-plt.show()
+plt.savefig('static/mds_plot.png') # Save to static directory 
+plt.close()
 
 ### UMAP ###
 
@@ -83,6 +83,7 @@ sns.scatterplot(x='UMAP1', y='UMAP2', hue='Population', data=umap_df)
 plt.title('UMAP Analysis of Gene Expression Data')
 plt.xlabel('UMAP Component 1')
 plt.ylabel('UMAP Component 2')
-plt.show()
+plt.savefig('static/umap_plot.png') # Save to static directory 
+plt.close()
 
 
