@@ -1,30 +1,32 @@
+from sqlalchemy import create_engine
+import pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.manifold import MDS
+import umap
 import matplotlib.pyplot as plt
 import seaborn as sns
-import numpy as np
-import pandas as pd
-import umap
 
-# Load Siberian data (replace 'siberian_data' with actual data)
-siberian_data = load_siberian_data()
+# Replace the below connection string with your actual database connection details
+# For SQLite: 'sqlite:///your_database_name.db'
+# For MySQL: 'mysql+pymysql://user:password@hostname/database_name'
+# For PostgreSQL: 'postgresql://user:password@hostname/database_name'
+db_connection_str = 'your_database_connection_string_here'
 
-# Load 1000 Genomes data (replace 'genomes_data' with actual data)
-genomes_data = load_genomes_data()
+# Creating a database engine
+db_engine = create_engine(db_connection_str)
 
-# Select specific populations and/or superpopulations
-selected_populations = ['Population1', 'Population2']
+# SQL query to select data (adjust the query according to your database schema)
+sql_query = """
+SELECT * FROM your_table_name WHERE Population IN ('Population1', 'Population2');
+"""
 
-# Filter data to include only selected populations/superpopulations
-filtered_siberian_data = siberian_data[siberian_data['Population'].isin(selected_populations)]
-filtered_genomes_data = genomes_data[genomes_data['Population'].isin(selected_populations)]
+# Loading data from the SQL database
+data = pd.read_sql(sql_query, db_engine)
 
-# Combine both datasets if needed
-merged_data = pd.concat([filtered_siberian_data, filtered_genomes_data], axis=0)
-
+# Assuming 'data' now contains both Siberian and 1000 Genomes data similar to 'merged_data' in your original code
 # Separate the gene expression data and the population labels
-X = merged_data.drop(['Population', 'Superpopulation'], axis=1)  # Adjust column names as needed
-y = merged_data['Population']  # Use 'Superpopulation' if needed
+X = data.drop(['Population', 'Superpopulation'], axis=1)  # Adjust column names as needed
+y = data['Population']  # Use 'Superpopulation' if needed for clustering
 
 ### PCA ###
 
