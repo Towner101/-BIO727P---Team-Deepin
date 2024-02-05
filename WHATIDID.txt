@@ -55,3 +55,6 @@ Resolving deltas: 100% (3/3), done.
 *Work within the repository on local computer
 *Push changes made on local computer to remote repository with 'git push'
 
+## HT 05 Feb 2024 - drafted place holder code for cluster analysis 
+cleaned up the LFS as i had attempted to move the raw VCF files there and this is not possible/not what we should be doing. added a .gitignore file to ignore the .DS_Store which could cause problems later. 
+
