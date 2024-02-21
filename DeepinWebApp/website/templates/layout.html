@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }} - Deepin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('about') }}">About Us</a>
+            <!-- Add more navigation links as needed -->
+        </nav>
+    </header>
+    <div class="container main-content">
+        {% block content %}{% endblock %}
+    </div>
+    <footer>
+        Deepin © 2023. All rights reserved.
+    </footer>
+</body>
+</html>
