@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Admixture Analysis</h2>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{ form.populations.label }}
+        {{ form.populations(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.num_ancestral_pops.label }}
+        {{ form.num_ancestral_pops(class="form-control", min=1) }}
+    </div>
+    <div class="form-group">
+        {{ form.submit(class="btn btn-primary") }}
+    </div>
+</form>
+{% endblock %}
+
+{% block content %}
+<h2>Admixture Analysis Results</h2>
+<!-- Example content; replace with actual data visualization -->
+<div id="results">
+    {% for result in results %}
+        <!-- Display your results here -->
+    {% endfor %}
+</div>
+{% endblock %}
