@@ -1,9 +1,11 @@
+
 from flask import Flask
+from .routes.main import main  
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'qmuldeepinweb'
-
+    app.register_blueprint(main)
     return app
+
 
 
