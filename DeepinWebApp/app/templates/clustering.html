@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Clustering Analysis</h2>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.populations.label }}
+        {{ form.populations(size=10, multiple=True) }} <!-- Adjust size and multiple as needed -->
+    </div>
+    <div>
+        {{ form.analysis_method.label }}
+        {% for radio in form.analysis_method %}
+            {{ radio }} {{ radio.label }}
+        {% endfor %}
+    </div>
+    <div>
+        {{ form.submit }}
+    </div>
+</form>
+{% endblock %}
