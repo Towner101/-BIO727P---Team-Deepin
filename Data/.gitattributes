@@ -1,2 +1,0 @@
-*.{csv,vcf}.zip filter=lfs diff=lfs merge=lfs -text
-
