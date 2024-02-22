@@ -3,14 +3,10 @@ from flask import Blueprint
 #define the name of the Blueprint
 auth = Blueprint('auth',__name__)
 
-#define authentication routes 
-@auth.route('/login')
-def login():
-    return 'Login page'
-
-@auth.route('/logout')
-def logout():
-    return 'Logout page'
+@auth.route('/snp/<int:snp_id>')
+def snp(snp_id):
+    snp_data = get_snp_data(snp_id)
+    return render_template('snp.html', snp_data=snp_data)
 
 #register the blueprint with the Flask app
 def create_app():
