@@ -2,7 +2,7 @@
 
 {% block content %}
 <h2>Admixture Analysis</h2>
-<form action="" method="post" novalidate>
+<form action="" method="POST" novalidate>
     {{ form.hidden_tag() }}
     <div class="form-group">
         {{ form.populations.label }}
@@ -18,12 +18,3 @@
 </form>
 {% endblock %}
 
-{% block content %}
-<h2>Admixture Analysis Results</h2>
-<!-- Example content; replace with actual data visualization -->
-<div id="results">
-    {% for result in results %}
-        <!-- Display your results here -->
-    {% endfor %}
-</div>
-{% endblock %}

@@ -17,13 +17,6 @@ def admixture_analysis():
         # Assuming you store results in a session or pass them directly, redirect to the results route
         return redirect(url_for('admixture.admixture_analysis_results'))
     
-    return render_template('admixture_analysis.html', form=form)
+    return render_template('admixture.html', form=form)
 
-@admixture.route('/admixture/results')
-def admixture_analysis_results():
-    # Retrieve the analysis results here
-    # For demonstration, this is a placeholder
-    results = {}  # This should be replaced with actual data retrieval logic
-    
-    return render_template('admixture_results.html', results=results)
 
