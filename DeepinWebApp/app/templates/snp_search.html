@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="snp-search-banner">
+    <!-- Banner content or image here -->
+</div>
+
+<h2>SNP Search</h2>
+<form method="post">
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+        {{ form.search_option.label }}
+        {% for option in form.search_option %}
+            <div class="form-check">
+                {{ option(class='form-check-input') }}
+                {{ option.label(class='form-check-label') }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="form-group">
+        {{ form.snp_ids.label(class='form-label') }}
+        {{ form.snp_ids(size=20, class_='form-control') }}
+    </div>
+
+    <div class="form-group">
+        {{ form.chromosome.label(class='form-label') }}
+        {{ form.chromosome(size=20, class_='form-control') }}
+    </div>
+
+    <div class="form-group">
+        {{ form.start_position.label(class='form-label') }}
+        {{ form.start_position(size=20, class_='form-control') }}
+    </div>
+
+    <div class="form-group">
+        {{ form.end_position.label(class='form-label') }}
+        {{ form.end_position(size=20, class_='form-control') }}
+    </div>
+
+    <div class="form-group">
+        {{ form.gene_names.label(class='form-label') }}
+        {{ form.gene_names(size=20, class_='form-control') }}
+    </div>
+
+    <div class="form-group">
+        {{ form.populations.label(class='form-label') }}
+        {{ form.populations(size=5, multiple=True, class_='form-control') }}
+    </div>
+
+    <div class="form-group">
+        {{ form.superpopulations.label(class='form-label') }}
+        {{ form.superpopulations(size=5, multiple=True, class_='form-control') }}
+    </div>
+
+    <div class="form-group">
+        {{ form.submit(class_='btn btn-primary') }}
+    </div>
+</form>
+
+{% if results %}
+    <h3>Results</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>SNP ID</th>
+                <th>Chromosome</th>
+                <th>Position</th>
+                <th>Gene Name</th>
+                <th>Population</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for snp in results %}
+            <tr>
+                <td>{{ snp.snp_id }}</td>
+                <td>{{ snp.chromosome }}</td>
+                <td>{{ snp.position }}</td>
+                <td>{{ snp.gene_name }}</td>
+                <td>{{ snp.population }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No results found.</p>
+{% endif %}
+{% endblock %}
+
+

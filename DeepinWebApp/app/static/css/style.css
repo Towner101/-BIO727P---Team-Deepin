@@ -1,0 +1,139 @@
+/* Add margins to the body to affect the overall layout */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.main-content-container {
+    max-width: 960px;
+    width: 90%; 
+    max-width: 1200px; 
+    margin: 20px auto; 
+    padding: 20px; 
+}
+
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-around; 
+    align-items: center;
+}
+
+nav {
+    width: 100%;
+    background-color: #1e3367; 
+}
+
+/* Set the banner image for the clustering analysis section */
+.clustering-analysis-banner {
+    background: url('app/static/images/Deepin genetics hub section banners/clustering_analysis_banner.png') no-repeat center center;
+    background-size: cover;
+}
+
+/* Set the banner image for the admixture analysis section */
+.admixture-analysis-banner {
+    background: url('app/static/images/Deepin genetics hub section banners/admixture_analysis_banner.png') no-repeat center center;
+    background-size: cover;
+}
+
+/* Set the banner image for the SNP search section */
+.snp-search-banner {
+    background: url('app/static/images/Deepin genetics hub section banners/snp_search_banner.png') no-repeat center center;
+    background-size: cover;
+}
+
+/* Set the banner image for the about section */
+.about-banner {
+    background: url('app/static/images/Deepin genetics hub section banners/about_banner.png') no-repeat center center;
+    background-size: cover;
+}
+
+/* Update link styles for better visibility and alignment */
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block; /* This ensures the padding affects the clickable area */
+}
+
+/* Add a hover effect to the nav links for interactivity */
+nav ul li a:hover {
+    background-color: #555;
+    color: white;
+}
+
+/* Form control elements */
+.form-control {
+    width: 70%; 
+    padding: 0.375rem 0.75rem; 
+    font-size: 1rem; 
+    line-height: 1.5; 
+    color: #495057; 
+    background-color: #fff; 
+    background-clip: padding-box;
+    border: 1px solid #ced4da; 
+    border-radius: 0.25rem; 
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+/* Radio buttons */
+.form-check-input {
+    margin-right: 0.3rem; 
+}
+
+/* Submit button */
+.btn-primary {
+    color: #fff; /* Text color */
+    background-color: #112c49; /* Background color */
+    border-color: #f5faff; /* Border color */
+}
+
+.btn-primary:hover {
+    color: #fff; 
+    background-color: #152c44; 
+    border-color: #0056b3; 
+}
+
+/* Custom styling for submit button */
+.btn {
+    display: block; 
+    width: 30%; 
+    padding: 0.375rem 0.75rem; 
+    margin-top: 1.5rem; 
+    font-size: 1rem; 
+    line-height: 1.5; 
+    border-radius: 0.25rem; 
+    cursor: pointer; 
+}
+
+/* Additional styles for the form layout */
+.form-group {
+    margin-bottom: 2rem; 
+}
+
+.banner img {
+    width: 100%;
+    height: auto;
+    display: block; 
+}
+
+.analysis-options {
+    background-color: #28195b; 
+    color: white;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .analysis-options label {
+    margin-right: 10px;
+    font-size: 18px;
+  }
+  
+  .analysis-options select {
+    padding: 5px 10px;
+    font-size: 16px;
+    color: #333;
+  }
