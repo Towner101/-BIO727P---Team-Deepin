@@ -1,4 +1,15 @@
-{% extends 'base.html' %} {% block content %}
-    <h1>Welcome to Deepin Genetic Analysis App</h1>
-    <p>This application allows users to perform genetic data analysis, including clustering and admixture analysis, and to retrieve SNP information.</p>
+{% extends 'base.html' %} 
+
+{% block content %}
+
+
+  <div class="analysis-options">
+  <label for="analysis-select">Choose an analysis:</label>
+  <select id="analysis-select" onchange="location = this.value;">
+    <option value="">Select an option...</option>
+    <option value="{{ url_for('main.clustering') }}">Cluster Analysis</option>
+    <option value="{{ url_for('main.admixture') }}">Admixture Analysis</option>
+    <option value="{{ url_for('main.snp_search') }}">SNP Search</option>
+  </select>
+</div>
 {% endblock %}

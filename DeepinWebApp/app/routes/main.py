@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from app.forms import ClusteringAnalysisForm
-from app.forms import AdmixtureAnalysisForm
-from app.forms import SNPInformationForm
+from app.forms import ClusteringAnalysisForm, AdmixtureAnalysisForm, SNPSearchForm
+from app.extensions import db
+from app.models import SNP
 
 
 main = Blueprint('main', __name__)
@@ -14,48 +14,52 @@ def home():
 def clustering():
     form = ClusteringAnalysisForm()
     if form.validate_on_submit():
-        # Here you'll handle the selected options and perform the analysis
-        # Redirect to the same page to demonstrate functionality
+        # Handle selected options and perform analysis
         return redirect(url_for('main.clustering'))
     return render_template('clustering.html', form=form)
 
 @main.route('/admixture', methods=['GET', 'POST'])
 def admixture():
     form = AdmixtureAnalysisForm()
-    # Dynamically populate the 'choices' for 'populations'
-    form.populations.choices = [('pop1', 'Population 1'), ('pop2', 'Population 2')]  # Example choices
-
     if form.validate_on_submit():
         selected_populations = form.populations.data
         num_ancestral_pops = form.num_ancestral_pops.data
-        # Here, perform the admixture analysis with the selected options
         
-        # Redirect or display results as needed
-        # For example, you might redirect to a results page or back to the form page
-        return redirect(url_for('main.admixture_results'))  # Example redirect
+        # Perform the admixture analysis with selected options
+        return redirect(url_for('main.admixture'))  
 
     return render_template('admixture.html', form=form)
 
-@main.route('/snp_info', methods=['GET', 'POST'])
-def snp_information():
-    form = SNPInformationForm()
+@main.route('/snp_search', methods=['GET', 'POST'])
+def snp_search():
+    form = SNPSearchForm()
+    results = None  # Variable to hold query results
+
     if form.validate_on_submit():
-        # Process form submission here
-        # For example, extract form data and perform a query based on the selected search option
         search_option = form.search_option.data
         populations = form.populations.data
-        
+
+        query = SNP.query  
+
         if search_option == 'snp_id':
-            snp_ids = form.snp_ids.data.split(',')  # Assuming multiple SNP IDs can be separated by commas
+            snp_ids = form.snp_ids.data.split(',')
+            query = query.filter(SNP.snp_id.in_(snp_ids))
         elif search_option == 'coordinates':
             chromosome = form.chromosome.data
-            start_position = form.start_position.data
-            end_position = form.end_position.data
+            start_position = int(form.start_position.data)
+            end_position = int(form.end_position.data)
+            query = query.filter(SNP.chromosome == chromosome, SNP.position.between(start_position, end_position))
         elif search_option == 'gene_name':
-            gene_names = form.gene_names.data.split(',')  # Assuming multiple gene names can be separated by commas
+            gene_names = form.gene_names.data.split(',')
+            query = query.filter(SNP.gene_name.in_(gene_names))
 
-        # Redirect to a results page or back to the form page with query results
-        # For demonstration, redirecting back to the form page
-        return redirect(url_for('main.snp_info'))
+        if populations:
+            query = query.filter(SNP.population.in_(populations))
 
-    return render_template('snp_info.html', form=form)
+        results = query.all()  # Execute query and collect results
+
+    return render_template('snp_search.html', form=form, results=results)
+
+@main.route('/aboutus')
+def about():
+    return render_template('aboutus.html')
