@@ -8,6 +8,7 @@
 </head>
 <style>
 h1 {
+<<<<<<< HEAD
     color: black ;
 }
 body {
@@ -17,10 +18,28 @@ body {
   <div class="container">
     <h1>Cluster Analysis</h1>
     <p>This page presents the results of a cluster analysis of genetic data for a set of samples. The analysis was performed using the <a href="https://github.com/joseph-hall/platypus">Platypus</a> software package. The plot below shows the clustering of the samples based on their genetic similarity.</p>
+=======
+    color: white;
+}
+body {
+  background-color: white;
+  background-image: url("{{ url_for('static', filename='Web_DNA_image.jpg') }}"); color: white;
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat;;
+}
+</style>
+<body>
+  <div class="container">
+    <button class="btn btn-secondary" style="margin-bottom: 5px; margin-left: 0px;" onclick="goBack()">Back</button>
+    <h1>Cluster Analysis</h1>
+    <p>This page presents the results of a cluster analysis of genetic data.</p>
+>>>>>>> 5148a8146d3791026cac0264ac6e18f91c82b4e6
     <div class="row">
       <div class="col-md-8">
         <figure class="highcharts-figure">
           <div id="cluster-plot"></div>
+<<<<<<< HEAD
           <figcaption>Cluster plot of genetic data for a set of samples.</figcaption>
         </figure>
       </div>
@@ -36,6 +55,19 @@ body {
       </div>
     </div>
   </div>
+=======
+          <figcaption>Cluster plot</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+  <script>
+    function goBack() {
+      // Use the browser's history to go back
+      window.history.back();
+    }
+  </script>
+>>>>>>> 5148a8146d3791026cac0264ac6e18f91c82b4e6
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSGFpoO/ufreqqF6MVu4JdG7PhIxZlW8sSJv43gkdSHluaInJd/X7lv" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoJtKh7z7lGz7fuP4F8nfdFvAOA6Gg/z6Y5J6XqqyGXYM2ntX5" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
@@ -50,4 +82,8 @@ body {
       },
       title: {
         text: 'Cluster Plot of Genetic Data'
+<<<<<<< HEAD
       } 
+=======
+      }
+>>>>>>> 5148a8146d3791026cac0264ac6e18f91c82b4e6
