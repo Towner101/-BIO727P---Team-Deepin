@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+</head>
+<body>
+    <h1>Search Results</h1>
+    <ul>
+        {% for result in results %}
+            <li>{{ result.snp_id }}: {{ result.gene_name }} - Allele Frequencies: {{ result.allele_frequencies }}</li>
+        {% else %}
+            <li>No results found.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

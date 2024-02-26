@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, app, render_template, request, redirect, url_for
 from app.forms import ClusteringAnalysisForm, AdmixtureAnalysisForm, SNPSearchForm
 from app.extensions import db
 from app.models import SNP
@@ -44,11 +44,6 @@ def snp_search():
         if search_option == 'snp_id':
             snp_ids = form.snp_ids.data.split(',')
             query = query.filter(SNP.snp_id.in_(snp_ids))
-        elif search_option == 'coordinates':
-            chromosome = form.chromosome.data
-            start_position = int(form.start_position.data)
-            end_position = int(form.end_position.data)
-            query = query.filter(SNP.chromosome == chromosome, SNP.position.between(start_position, end_position))
         elif search_option == 'gene_name':
             gene_names = form.gene_names.data.split(',')
             query = query.filter(SNP.gene_name.in_(gene_names))
@@ -63,3 +58,5 @@ def snp_search():
 @main.route('/aboutus')
 def about():
     return render_template('aboutus.html')
+
+

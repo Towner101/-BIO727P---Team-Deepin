@@ -20,73 +20,70 @@ superpopulation_choices = [
 
 class ClusteringAnalysisForm(FlaskForm):
     populations = SelectMultipleField(
-        'Select Populations', 
+        'Select Populations',
         choices=population_choices,
         validators=[DataRequired()],
-        render_kw={"class": "form-control"}
+        render_kw={"class": "form-control select2-multiple", "multiple": "multiple"}
     )
     superpopulations = SelectMultipleField(
-        'Select Superpopulations', 
+        'Select Superpopulations',
         choices=superpopulation_choices,
         validators=[Optional()],
-        render_kw={"class": "form-control"}
+        render_kw={"class": "form-control select2-multiple", "multiple": "multiple"}
     )
-
     analysis_method = RadioField(
-        'Select Analysis Method', 
-        choices=[('PCA', 'PCA'), ('MDS', 'MDS'), ('UMAP', 'UMAP')],
+        'Select Analysis Method',
+        choices=[('PCA', 'PCA')],
         validators=[DataRequired()],
         render_kw={"class": "form-check-input"}
     )
-    submit = SubmitField(
-        'Analyse',
-        render_kw={"class": "btn btn-primary"}
-    )
+    submit = SubmitField('Analyse', render_kw={"class": "btn btn-primary"})
 
 class AdmixtureAnalysisForm(FlaskForm):
     populations = SelectMultipleField(
         'Select Populations',
         choices=population_choices,
         validators=[DataRequired()],
-        render_kw={"class": "form-control"}
+        render_kw={"class": "form-control select2-multiple", "multiple": "multiple"}
     )
     superpopulations = SelectMultipleField(
         'Select Superpopulations',
         choices=superpopulation_choices,
-        validators=[DataRequired()],
-        render_kw={"class": "form-control"}
+        validators=[Optional()],
+        render_kw={"class": "form-control select2-multiple", "multiple": "multiple"}
     )
     num_ancestral_pops = IntegerField(
         'Number of Ancestral Populations (K)',
-        validators=[DataRequired(), NumberRange(min=1, message='Must be at least 1')],
+        validators=[DataRequired(), NumberRange(min=1, max=10, message='Must be between 1 and 10')],
         render_kw={"class": "form-control"}
     )
     submit = SubmitField('Run Admixture Analysis', render_kw={"class": "btn btn-primary"})
-    
 
 class SNPSearchForm(FlaskForm):
-    search_option = RadioField('Search By', 
-    choices=[
-        ('snp_id', 'SNP IDs'), 
-        ('coordinates', 'Genomic Coordinates'), 
-        ('gene_name', 'Gene Names')
-    ], default='snp_id')
-    snp_ids = StringField('SNP IDs')
-    chromosome = StringField('Chromosome')
-    start_position = StringField('Start Position')
-    end_position = StringField('End Position')
-    gene_names = StringField('Gene Names')
+    search_option = RadioField(
+        'Search By',
+        choices=[
+            ('snp_id', 'SNP IDs'),
+            ('gene_name', 'Gene Names')
+        ],
+        default='snp_id',
+        validators=[DataRequired()],
+        render_kw={"class": "form-check-input"}
+    )
+    snp_ids = StringField('SNP IDs', validators=[Optional()])
+    gene_names = StringField('Gene Names', validators=[Optional()])
     populations = SelectMultipleField(
-        'Select Populations', 
+        'Select Populations',
         choices=population_choices,
         validators=[Optional()],
-        render_kw={"class": "form-control"}
+        render_kw={"class": "form-control", "multiple": "multiple"}
     )
     superpopulations = SelectMultipleField(
-        'Select Superpopulations', 
+        'Select Superpopulations',
         choices=superpopulation_choices,
         validators=[Optional()],
-        render_kw={"class": "form-control"}
+        render_kw={"class": "form-control", "multiple": "multiple"}
     )
-    submit = SubmitField('Search')
+
+    submit = SubmitField('Search', render_kw={"class": "btn btn-primary"})
 

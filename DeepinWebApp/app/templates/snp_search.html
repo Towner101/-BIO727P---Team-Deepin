@@ -1,92 +1,61 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="container mt-4">
+    <h2>SNP Search</h2>
+    <form method="post" id="snpSearchForm">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.search_option.label }}
+            {% for option in form.search_option %}
+                <div class="form-check">
+                    {{ option() }} {{ option.label }}
+                </div>
+            {% endfor %}
+        </div>
 
-<div class="snp-search-banner">
-    <!-- Banner content or image here -->
+        <div class="form-group" id="snpIdsInput" style="display: none;">
+            {{ form.snp_ids.label }}
+            {{ form.snp_ids(class="form-control") }}
+        </div>
+
+        <div class="form-group" id="geneNamesInput" style="display: none;">
+            {{ form.gene_names.label }}
+            {{ form.gene_names(class="form-control") }}
+        </div>
+
+        <div class="form-group">
+            {{ form.populations.label }}
+            {{ form.populations(class="form-control", multiple=True) }}
+        </div>
+
+        <div class="form-group">
+            {{ form.superpopulations.label }}
+            {{ form.superpopulations(class="form-control", multiple=True) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+    </form>
 </div>
 
-<h2>SNP Search</h2>
-<form method="post">
-    {{ form.hidden_tag() }}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const searchOptionRadios = document.getElementsByName("search_option");
+    const snpIdsInput = document.getElementById("snpIdsInput");
+    const geneNamesInput = document.getElementById("geneNamesInput");
 
-    <div class="form-group">
-        {{ form.search_option.label }}
-        {% for option in form.search_option %}
-            <div class="form-check">
-                {{ option(class='form-check-input') }}
-                {{ option.label(class='form-check-label') }}
-            </div>
-        {% endfor %}
-    </div>
+    function toggleInputFields() {
+        if (searchOptionRadios[0].checked) {
+            snpIdsInput.style.display = "block";
+            geneNamesInput.style.display = "none";
+        } else if (searchOptionRadios[1].checked) {
+            snpIdsInput.style.display = "none";
+            geneNamesInput.style.display = "block";
+        }
+    }
 
-    <div class="form-group">
-        {{ form.snp_ids.label(class='form-label') }}
-        {{ form.snp_ids(size=20, class_='form-control') }}
-    </div>
-
-    <div class="form-group">
-        {{ form.chromosome.label(class='form-label') }}
-        {{ form.chromosome(size=20, class_='form-control') }}
-    </div>
-
-    <div class="form-group">
-        {{ form.start_position.label(class='form-label') }}
-        {{ form.start_position(size=20, class_='form-control') }}
-    </div>
-
-    <div class="form-group">
-        {{ form.end_position.label(class='form-label') }}
-        {{ form.end_position(size=20, class_='form-control') }}
-    </div>
-
-    <div class="form-group">
-        {{ form.gene_names.label(class='form-label') }}
-        {{ form.gene_names(size=20, class_='form-control') }}
-    </div>
-
-    <div class="form-group">
-        {{ form.populations.label(class='form-label') }}
-        {{ form.populations(size=5, multiple=True, class_='form-control') }}
-    </div>
-
-    <div class="form-group">
-        {{ form.superpopulations.label(class='form-label') }}
-        {{ form.superpopulations(size=5, multiple=True, class_='form-control') }}
-    </div>
-
-    <div class="form-group">
-        {{ form.submit(class_='btn btn-primary') }}
-    </div>
-</form>
-
-{% if results %}
-    <h3>Results</h3>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>SNP ID</th>
-                <th>Chromosome</th>
-                <th>Position</th>
-                <th>Gene Name</th>
-                <th>Population</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for snp in results %}
-            <tr>
-                <td>{{ snp.snp_id }}</td>
-                <td>{{ snp.chromosome }}</td>
-                <td>{{ snp.position }}</td>
-                <td>{{ snp.gene_name }}</td>
-                <td>{{ snp.population }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% else %}
-    <p>No results found.</p>
-{% endif %}
+    searchOptionRadios.forEach(radio => radio.addEventListener("change", toggleInputFields));
+    toggleInputFields(); // Initial call to set the correct display state
+});
+</script>
 {% endblock %}
-
-
