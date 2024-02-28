@@ -7,7 +7,7 @@ snp_info_bp = Blueprint('snp_info', __name__)
 @snp_info_bp.route('/snp_search', methods=['GET', 'POST'])
 def snp_search():
     form = SNPSearchForm()
-    results = None  # Initialize results as None to indicate no search has been performed yet
+    results = None  # Initialise results as None to indicate no search has been performed yet
     error = None  # To capture and display any errors during search
 
     if form.validate_on_submit():

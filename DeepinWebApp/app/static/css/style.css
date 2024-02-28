@@ -86,9 +86,9 @@ nav ul li a:hover {
 
 /* Submit button */
 .btn-primary {
-    color: #fff; /* Text color */
-    background-color: #112c49; /* Background color */
-    border-color: #f5faff; /* Border color */
+    color: #fff; 
+    background-color: #112c49; 
+    border-color: #f5faff; 
 }
 
 .btn-primary:hover {
