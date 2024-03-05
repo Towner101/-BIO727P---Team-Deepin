@@ -1,8 +1,11 @@
-from flask import Blueprint, app, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for
 from app.forms import ClusteringAnalysisForm, AdmixtureAnalysisForm, SNPSearchForm
-from app.extensions import db
-from app.models import SNP
-
+from app.models.db_models import AnalysisResults, db
+import numpy as np
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
+import io
+import base64
 
 main = Blueprint('main', __name__)
 
@@ -14,49 +17,30 @@ def home():
 def clustering():
     form = ClusteringAnalysisForm()
     if form.validate_on_submit():
-        # Handle selected options and perform analysis
-        return redirect(url_for('main.clustering'))
+        selected_populations = form.populations.data
+        # Query data for clustering based on selected populations
+        results = AnalysisResults.get_results_for_clustering(selected_populations)
+        return render_template('clustering_results.html', results=results)
     return render_template('clustering.html', form=form)
 
 @main.route('/admixture', methods=['GET', 'POST'])
 def admixture():
     form = AdmixtureAnalysisForm()
     if form.validate_on_submit():
-        selected_populations = form.populations.data
-        num_ancestral_pops = form.num_ancestral_pops.data
-        
-        # Perform the admixture analysis with selected options
-        return redirect(url_for('main.admixture'))  
-
+        selected_superpopulations = form.superpopulations.data
+        # Query data for admixture analysis based on selected superpopulations
+        results = AnalysisResults.get_results_for_admixture(selected_superpopulations)
+        return render_template('admixture_results.html', results=results)
     return render_template('admixture.html', form=form)
 
 @main.route('/snp_search', methods=['GET', 'POST'])
 def snp_search():
     form = SNPSearchForm()
-    results = None  # Variable to hold query results
-
+    results = None  
     if form.validate_on_submit():
-        search_option = form.search_option.data
-        populations = form.populations.data
-
-        query = SNP.query  
-
-        if search_option == 'snp_id':
-            snp_ids = form.snp_ids.data.split(',')
-            query = query.filter(SNP.snp_id.in_(snp_ids))
-        elif search_option == 'gene_name':
-            gene_names = form.gene_names.data.split(',')
-            query = query.filter(SNP.gene_name.in_(gene_names))
-
-        if populations:
-            query = query.filter(SNP.population.in_(populations))
-
-        results = query.all()  # Execute query and collect results
-
+        pass
     return render_template('snp_search.html', form=form, results=results)
 
 @main.route('/aboutus')
 def about():
     return render_template('aboutus.html')
-
-

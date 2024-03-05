@@ -3,64 +3,46 @@
 {% block content %}
 
 <div class="admixture-analysis-banner">
-    <!-- Content here -->
+    <!-- Banner content here -->
 </div>
 
 <h2>Admixture Analysis</h2>
 <form method="post" id="admixture-form">
     {{ form.hidden_tag() }}
-    
+
+    <!-- Superpopulations and their populations -->
+    {% for superpop_code, populations in form.populations_by_superpopulation().items() %}
     <div class="form-group">
-        {{ form.populations.label }}
-        {{ form.populations(size=5, multiple=True, class_='form-control') }}
+        <!-- Superpopulation Header -->
+        <div class="collapsible-header" data-toggle="collapse" data-target="#collapse{{ superpop_code }}">
+         Select {{ form.superpopulations.choices|selectattr('0', 'equalto', superpop_code)|map(attribute='1')|first }} Populations
+         <i class="fa fa-chevron-down collapsible-arrow"></i>
+        </div>
+        
+        <!-- Populations for this Superpopulation -->
+        <div id="collapse{{ superpop_code }}" class="collapse collapsible-content">
+            <div class="card card-body">
+                {% for value, pop_label in populations %}
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="populations" value="{{ value }}" id="{{ value }}">
+                    <label class="form-check-label" for="{{ value }}">
+                        {{ pop_label }}
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
-    
-    <div class="form-group">
-        {{ form.superpopulations.label }}
-        {{ form.superpopulations(size=5, multiple=True, class_='form-control') }}
-    </div>
-    
+    {% endfor %}
+
     <div class="form-group">
         {{ form.num_ancestral_pops.label }}
         {{ form.num_ancestral_pops(class="form-control", min=1) }}
     </div>
-    
+
     <div class="form-group">
-        <button type="button" onclick="showFstHeatmap()" class="btn btn-primary">Show FST Heatmap</button>
+        <button type="submit" class="btn btn-primary">Show FST Heatmap</button>
     </div>
 </form>
 
-<div id="fst-heatmap-container" style="display:none;">
-    <h3>FST Comparison Heatmap</h3>
-    <img id="fst-heatmap-image" src="" alt="" class="img-fluid" />
-</div>
-
-<script type="text/javascript">
-
-
-function showFstHeatmap() {
-    // Determine which group is selected
-    let populationsSelected = document.querySelector('#populations').value;
-    let superpopulationsSelected = document.querySelector('#superpopulations').value;
-    let fstImage = document.getElementById('fst-heatmap-image');
-    let container = document.getElementById('fst-heatmap-container');
-
-    // Based on the selection, update the source of the heatmap image
-    if (populationsSelected.length > 0) {
-        fstImage.src = "{{ url_for('static', filename='/images/Pairwise_fst/Population - pairwise FST.jpeg') }}";
-        fstImage.alt = "Population Pairwise FST Heatmap";
-        container.style.display = "block";
-    } else if (superpopulationsSelected.length > 0) {
-        fstImage.src = "{{ url_for('static', filename='/images/Pairwise_fst/Superpopulations - pairwise FST.jpeg') }}";
-        fstImage.alt = "Superpopulations Pairwise FST Heatmap";
-        container.style.display = "block";
-    } else {
-        container.style.display = "none";
-    }
-}
-</script>
-
 {% endblock %}
-
-
-

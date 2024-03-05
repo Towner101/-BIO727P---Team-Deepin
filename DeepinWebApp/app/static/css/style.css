@@ -186,4 +186,77 @@ nav ul li a:hover {
     }
 }
 
+body {
+    font-family: 'Arial', sans-serif;
+}
+.banner-image img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Styling for collapsible headers */
+.collapsible-header {
+    cursor: pointer;
+    padding: 0.75rem 1.25rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    font-size: 18px;
+    color: #337ab7;
+}
+
+/* Hover and focus styles for collapsible headers */
+.collapsible-header:hover,
+.collapsible-header:focus {
+    background-color: #e2e6ea;
+}
+
+/* Styling for the content area of the collapsibles */
+.collapsible-content {
+    padding: 0;
+    border: 1px solid #dee2e6;
+    border-top: none;
+    border-radius: 0 0 0.25rem 0.25rem;
+}
+
+/* Styling for the collapsible arrow */
+.collapsible-arrow {
+    transition: transform 0.3s ease;
+}
+
+/* Rotate arrow when collapsible is open */
+.collapse.show + .collapsible-arrow {
+    transform: rotate(-180deg);
+}
+
+.btn-primary {
+    background-color: #0056b3;
+    border-color: #004b9a;
+}
+
+.form-check-label {
+    margin-left: 5px;
+}
+
+.form-check-input {
+    cursor: pointer;
+}
+
+.form-check {
+    margin-bottom: 10px;
+}
+
+.card {
+    margin-bottom: 20px;
+}
+
 

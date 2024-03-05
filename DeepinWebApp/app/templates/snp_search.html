@@ -5,34 +5,54 @@
     <h2>SNP Search</h2>
     <form method="post" id="snpSearchForm">
         {{ form.hidden_tag() }}
+
+        <!-- Search Option Radio Buttons -->
         <div class="form-group">
             {{ form.search_option.label }}
             {% for option in form.search_option %}
-                <div class="form-check">
-                    {{ option() }} {{ option.label }}
-                </div>
+            <div class="form-check">
+                {{ option(class="form-check-input") }} {{ option.label(class="form-check-label") }}
+            </div>
             {% endfor %}
         </div>
 
+        <!-- Dynamic Input Fields based on the selected search option -->
         <div class="form-group" id="snpIdsInput" style="display: none;">
             {{ form.snp_ids.label }}
             {{ form.snp_ids(class="form-control") }}
         </div>
-
+        <div class="form-group" id="chromosomePositionInput" style="display: none;">
+            {{ form.chromosome.label }}
+            {{ form.chromosome(class="form-control") }}
+            {{ form.position.label }}
+            {{ form.position(class="form-control") }}
+        </div>
         <div class="form-group" id="geneNamesInput" style="display: none;">
             {{ form.gene_names.label }}
             {{ form.gene_names(class="form-control") }}
         </div>
 
+        <!-- Collapsible for Superpopulations and Populations, using full names for superpopulations -->
+        {% for superpop_code, populations in form.populations_by_superpopulation().items() %}
         <div class="form-group">
-            {{ form.populations.label }}
-            {{ form.populations(class="form-control", multiple=True) }}
+            <div id="collapse{{ superpop_code }}Header" class="collapsible-header" data-toggle="collapse" data-target="#collapse{{ superpop_code }}">
+                Select {{ form.superpopulations.choices|selectattr('0', 'equalto', superpop_code)|map(attribute='1')|first }} Populations
+                <i class="fa fa-chevron-down collapsible-arrow"></i>
+            </div>
+            <div id="collapse{{ superpop_code }}" class="collapse collapsible-content">
+                <div class="card card-body">
+                    {% for value, pop_label in populations %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="populations" value="{{ value }}" id="{{ value }}">
+                        <label class="form-check-label" for="{{ value }}">
+                            {{ pop_label }}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
-
-        <div class="form-group">
-            {{ form.superpopulations.label }}
-            {{ form.superpopulations(class="form-control", multiple=True) }}
-        </div>
+        {% endfor %}
 
         <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
     </form>
@@ -43,19 +63,24 @@ document.addEventListener("DOMContentLoaded", function() {
     const searchOptionRadios = document.getElementsByName("search_option");
     const snpIdsInput = document.getElementById("snpIdsInput");
     const geneNamesInput = document.getElementById("geneNamesInput");
+    const chromosomePositionInput = document.getElementById("chromosomePositionInput");
 
     function toggleInputFields() {
+        snpIdsInput.style.display = "none";
+        geneNamesInput.style.display = "none";
+        chromosomePositionInput.style.display = "none";
+
         if (searchOptionRadios[0].checked) {
             snpIdsInput.style.display = "block";
-            geneNamesInput.style.display = "none";
         } else if (searchOptionRadios[1].checked) {
-            snpIdsInput.style.display = "none";
             geneNamesInput.style.display = "block";
+        } else if (searchOptionRadios[2].checked) {
+            chromosomePositionInput.style.display = "block";
         }
     }
 
     searchOptionRadios.forEach(radio => radio.addEventListener("change", toggleInputFields));
-    toggleInputFields(); // Initial call to set the correct display state
+    toggleInputFields(); // Call this function initially to set the correct display state based on the pre-selected search option.
 });
 </script>
 {% endblock %}

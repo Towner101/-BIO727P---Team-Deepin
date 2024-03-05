@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principal Component Analysis (PCA)</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Principal Component Analysis (PCA) Results</h1>
+    
+    <!-- Display the table with clustering results -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>SAMPLE ID</th>
+                <th>POP</th>
+                <th>SUPER POP</th>
+                <th>PCA 1</th>
+                <th>PCA 2</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+            <tr>
+                <td>{{ result.id }}</td>
+                <td>{{ result.SAMPLE_ID }}</td> <!-- Assuming SAMPLE_ID is correct -->
+                <td>{{ result.POP }}</td>
+                <td>{{ result.SUPER_POP }}</td>
+                <td>{{ result.PCA1 }}</td>
+                <td>{{ result.PCA2 }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6">No results found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <!-- Display the PCA plot if available -->
+    {% if plot_data %}
+    <div style="margin-top: 20px;">
+        <h2>PCA Plot</h2>
+        <img src="data:image/png;base64,{{ plot_data }}" alt="PCA Plot" style="max-width:100%;">
+    </div>
+    {% endif %}
+
+    <div id="pcaPlot"></div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    fetch('/clustering/data?populations=AFR,AMR')
+      .then(response => response.json())
+      .then(data => {
+        const trace1 = {
+          x: data.map(d => d.PCA1),
+          y: data.map(d => d.PCA2),
+          mode: 'markers',
+          type: 'scatter',
+          text: data.map(d => `POP: ${d.POP}, SUPER_POP: ${d.SUPER_POP}`),
+          marker: { size: 12 }
+        };
+
+        const layout = {
+          title: 'PCA Analysis',
+          xaxis: { title: 'PCA1' },
+          yaxis: { title: 'PCA2' }
+        };
+
+        Plotly.newPlot('pcaPlot', [trace1], layout);
+      })
+      .catch(error => console.error('Error fetching PCA data:', error));
+  });
+</script>
+
+</body>
+</html>
