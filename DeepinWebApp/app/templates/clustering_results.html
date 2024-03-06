@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Principal Component Analysis (PCA)</title>
+    <link rel="stylesheet" href="https://cdn.plot.ly/plotly-latest.min.js">
     <style>
         table {
             width: 100%;
@@ -27,7 +28,6 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>SAMPLE ID</th>
                 <th>POP</th>
                 <th>SUPER POP</th>
                 <th>PCA 1</th>
@@ -38,7 +38,6 @@
             {% for result in results %}
             <tr>
                 <td>{{ result.id }}</td>
-                <td>{{ result.SAMPLE_ID }}</td> <!-- Assuming SAMPLE_ID is correct -->
                 <td>{{ result.POP }}</td>
                 <td>{{ result.SUPER_POP }}</td>
                 <td>{{ result.PCA1 }}</td>
@@ -46,7 +45,7 @@
             </tr>
             {% else %}
             <tr>
-                <td colspan="6">No results found.</td>
+                <td colspan="5">No results found.</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -61,6 +60,7 @@
     {% endif %}
 
     <div id="pcaPlot"></div>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     fetch('/clustering/data?populations=AFR,AMR')
@@ -71,7 +71,7 @@
           y: data.map(d => d.PCA2),
           mode: 'markers',
           type: 'scatter',
-          text: data.map(d => `POP: ${d.POP}, SUPER_POP: ${d.SUPER_POP}`),
+          text: data.map(d => `ID: ${d.id}, POP: ${d.POP}, SUPER_POP: ${d.SUPER_POP}`),
           marker: { size: 12 }
         };
 

@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, current_app
 from sqlalchemy import text
-from app.models.db_models import db  # Assuming db is your SQLAlchemy database instance
+from app.database import db  # Make sure 'db' is correctly imported from your database setup module
 
 clustering = Blueprint('clustering', __name__)
 
@@ -14,13 +14,13 @@ def get_clustering_data():
 
         # Ensure we have valid population selections before querying
         if selected_populations and selected_populations != ['']:
-            # Prepare SQL query
-            placeholders = ",".join(["%s"] * len(selected_populations))
-            sql_query = text(f"SELECT id, POP, SUPER_POP, PCA1, PCA2 FROM AnalysisResults WHERE POP IN ({placeholders})")
+            # Prepare SQL query, placeholders for SQLite are represented as '?'
+            placeholders = ",".join(["?"] * len(selected_populations))
+            # Using the correct table and column names as per your database schema
+            sql_query = text(f"SELECT SAMPLE_ID, POP, SUPER_POP, PCA1, PCA2 FROM Analysis_Results WHERE POP IN ({placeholders})")
 
             # Execute raw SQL query
-            conn = db.engine.connect()
-            result = conn.execute(sql_query, selected_populations)
+            result = db.engine.execute(sql_query, selected_populations)
 
             # Fetch results
             analysis_results = result.fetchall()
@@ -30,7 +30,7 @@ def get_clustering_data():
             if analysis_results:
                 # Convert analysis results to JSON-compatible format
                 data = [{
-                    'id': row[0],
+                    'SAMPLE_ID': row[0],
                     'POP': row[1],
                     'SUPER_POP': row[2],
                     'PCA1': float(row[3]),
@@ -47,5 +47,3 @@ def get_clustering_data():
     except Exception as e:
         current_app.logger.error(f"Error fetching clustering data: {e}", exc_info=True)
         return jsonify({'message': 'An error occurred fetching clustering data.'}), 500
-    finally:
-        conn.close()  # Ensure the connection is closed

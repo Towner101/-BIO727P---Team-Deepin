@@ -1,6 +1,6 @@
 import unittest
 from app import create_app
-from app.models.db_models import db
+from app import db
 
 class ClusteringDataTestCase(unittest.TestCase):
     def setUp(self):
