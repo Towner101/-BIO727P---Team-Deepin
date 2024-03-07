@@ -4,7 +4,7 @@ A group of MSc Bioinformatics students have collaborated to design Deepin Geneti
 
 **Dowloading the database**
 ----
-- To download our database click [here](https://qmulprod-my.sharepoint.com/personal/bt19341_qmul_ac_uk/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fbt19341%5Fqmul%5Fac%5Fuk%2FDocuments%2FDEEPIN%2Fapp%5Fdatabase%2Edb&parent=%2Fpersonal%2Fbt19341%5Fqmul%5Fac%5Fuk%2FDocuments%2FDEEPIN).
+- To download our database click [here](https://qmulprod-my.sharepoint.com/:u:/g/personal/bt19341_qmul_ac_uk/EW7JT57mbYFOqAw_RHDF4qIBKFmxXjmfWmp9-OavUBS_rQ?e=UgZtQt).
 - To visualise our database you would need to install SQLite.
 
 **Instructions for DEEPIN GENETICS HUB**
