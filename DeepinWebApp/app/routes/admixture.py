@@ -15,4 +15,4 @@ def admixture_analysis():
         flash('Analysis submitted successfully.', 'success')
         return redirect(url_for('admixture.admixture_analysis'))
     
-    return render_template('admixture.html', form=form)
+    return render_template('admixture.html', form=form) 

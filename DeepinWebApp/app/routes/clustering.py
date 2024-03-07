@@ -1,49 +1,55 @@
-from flask import Blueprint, request, jsonify, current_app
-from sqlalchemy import text
-from app.database import db  # Make sure 'db' is correctly imported from your database setup module
+from flask import Blueprint, request, render_template
+from flask_sqlalchemy import SQLAlchemy
+from app.forms import ClusteringAnalysisForm
+from app.models import SampleTable, FinalAnalysisResults
+import pandas as pd
+import matplotlib.pyplot as plt
+import base64
+import io
+from sklearn.decomposition import PCA
 
 clustering = Blueprint('clustering', __name__)
+db = SQLAlchemy()
 
-@clustering.route('/clustering/data', methods=['GET'])
-def get_clustering_data():
-    # Fetch populations from query parameters and split into a list
-    selected_populations = request.args.get('populations', '').split(',')
+@clustering.route('/clustering', methods=['GET', 'POST'])
+def clustering_analysis():
+    form = ClusteringAnalysisForm()
 
-    try:
-        current_app.logger.debug("Fetching clustering analysis data.")
+    if form.validate_on_submit():
+        selected_populations = form.populations.data
+        selected_superpopulations = form.superpopulations.data
 
-        # Ensure we have valid population selections before querying
-        if selected_populations and selected_populations != ['']:
-            # Prepare SQL query, placeholders for SQLite are represented as '?'
-            placeholders = ",".join(["?"] * len(selected_populations))
-            # Using the correct table and column names as per your database schema
-            sql_query = text(f"SELECT SAMPLE_ID, POP, SUPER_POP, PCA1, PCA2 FROM Analysis_Results WHERE POP IN ({placeholders})")
+        # Adjust your query as necessary, filtering by selected populations and superpopulations if provided
+        query = db.session.query(SampleTable.POP, SampleTable.SUPER_POP, 
+                                 FinalAnalysisResults.PCA1, FinalAnalysisResults.PCA2)\
+                          .join(FinalAnalysisResults, SampleTable.SAMPLE_ID == FinalAnalysisResults.SAMPLE_ID)
 
-            # Execute raw SQL query
-            result = db.engine.execute(sql_query, selected_populations)
+        if selected_populations:
+            query = query.filter(SampleTable.POP.in_(selected_populations))
+        if selected_superpopulations:
+            query = query.filter(SampleTable.SUPER_POP.in_(selected_superpopulations))
 
-            # Fetch results
-            analysis_results = result.fetchall()
+        df = pd.read_sql(query.statement, db.engine)
 
-            current_app.logger.info(f"Number of analysis results retrieved for populations {selected_populations}: {len(analysis_results)}")
-
-            if analysis_results:
-                # Convert analysis results to JSON-compatible format
-                data = [{
-                    'SAMPLE_ID': row[0],
-                    'POP': row[1],
-                    'SUPER_POP': row[2],
-                    'PCA1': float(row[3]),
-                    'PCA2': float(row[4])
-                } for row in analysis_results]
-
-                return jsonify(data)
-            else:
-                return jsonify({'message': 'No data found for the selected populations'}), 404
+        # Perform PCA and plotting if data is not empty
+        if not df.empty:
+            pca = PCA(n_components=2)
+            pca_result = pca.fit_transform(df[['PCA1', 'PCA2']])
+            
+            plt.figure(figsize=(10, 7))
+            plt.scatter(pca_result[:, 0], pca_result[:, 1], alpha=0.7)
+            plt.title('PCA Analysis')
+            plt.xlabel('Principal Component 1')
+            plt.ylabel('Principal Component 2')
+            
+            # Convert plot to PNG image
+            img = io.BytesIO()
+            plt.savefig(img, format='png')
+            img.seek(0)
+            plot_url = base64.b64encode(img.getvalue()).decode('utf8')
         else:
-            # No valid populations specified in the request
-            return jsonify({'message': 'No populations specified'}), 400
+            plot_url = None
 
-    except Exception as e:
-        current_app.logger.error(f"Error fetching clustering data: {e}", exc_info=True)
-        return jsonify({'message': 'An error occurred fetching clustering data.'}), 500
+        return render_template('clustering_results.html', form=form, plot_url=plot_url)
+
+    return render_template('clustering.html', form=form)

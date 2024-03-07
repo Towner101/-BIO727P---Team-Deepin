@@ -2,15 +2,12 @@
 
 {% block content %}
 
-<div class="clustering-analysis-banner">
-    <!-- Banner content might go here -->
-</div>
+<div class="clustering-analysis-banner"></div>
 
 <h2>Clustering Analysis</h2>
 <form method="post">
     {{ form.hidden_tag() }}
 
-    <!-- Assuming form.populations_by_superpopulation() is available and provides the necessary structure -->
     {% for superpop_code, populations in form.populations_by_superpopulation().items() %}
     <!-- Collapsible for Superpopulations -->
     <div class="form-group">

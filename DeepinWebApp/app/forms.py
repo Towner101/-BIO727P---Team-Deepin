@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectMultipleField, RadioField, SubmitField, IntegerField, SelectField
+from wtforms import StringField, SelectMultipleField, RadioField, SubmitField, IntegerField, SelectField, BooleanField
 from wtforms.validators import DataRequired, NumberRange, Optional
 
 # Define the populations grouped by superpopulations
