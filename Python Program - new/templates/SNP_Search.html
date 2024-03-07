@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SNP Search</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body>
+    <style>
+        body {
+                font-family: Arial, sans-serif;
+                margin: 0; 
+                padding: 0;
+                background-color: #f4f4f4;
+                background-image: url("{{ url_for('static', filename='Web_DNA_image.jpg') }}"); color: white;
+                background-size: cover; 
+                background-position: center; 
+                background-repeat: no-repeat;
+            }
+      </style>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">SNP Search</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('test5') }}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('Data_analysis') }}">Data Analysis</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="SNP_Search" href="{{ url_for('SNP_Search') }}">SNP Search</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('About_us') }}">About Us</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <style>
+            .checkbox-group {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+        
+            .checkbox-group div {
+                flex-basis: 48%; /* Adjust the percentage as needed */
+                margin-bottom: 10px; /* Optional: Add margin between checkboxes */
+            }
+        </style>
+
+        <form action="/search" method="post">
+                <div class="form-group" style="color: white;">
+                    <label style="font-size: 30px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; font-weight: bold;">Populations:</label>
+                    <div>
+                    <label style="font-size: 16px; font-weight: bold;">
+                        <input type="checkbox" name="populations[]" value="SIB" id="pop_SIB">
+                        <label for="pop_SIB">SIB</label>
+                        <input type="checkbox" name="populations[]" value="ACB" id="pop_ACB">
+                        <label for="pop_ACB">ACB</label>
+                        <input type="checkbox" name="populations[]" value="ASW" id="pop_ASW">
+                        <label for="pop_ASW">ASW</label>
+                        <input type="checkbox" name="populations[]" value="ESN" id="pop_ESN">
+                        <label for="pop_ESN">ESN</label>
+                        <input type="checkbox" name="populations[]" value="GWD" id="pop_GWD">
+                        <label for="pop_GWD">GWD</label>
+                        <input type="checkbox" name="populations[]" value="LWK" id="pop_LWK">
+                        <label for="pop_LWK">LWK</label>
+                        <input type="checkbox" name="populations[]" value="MSL" id="pop_MSL">
+                        <label for="pop_MSL">MSL</label>
+                        <input type="checkbox" name="populations[]" value="YRI" id="pop_YRI">
+                        <label for="pop_YRI">YRI</label>
+                        <input type="checkbox" name="populations[]" value="CLM" id="pop_CLM">
+                        <label for="pop_CLM">CLM</label>
+                        <input type="checkbox" name="populations[]" value="MXL" id="pop_MXL">
+                        <label for="pop_MXL">MXL</label>
+                        <input type="checkbox" name="populations[]" value="PEL" id="pop_PEL">
+                        <label for="pop_PEL">PEL</label>
+                        <input type="checkbox" name="populations[]" value="PUR" id="pop_PUR">
+                        <label for="pop_PUR">PUR</label>
+                        <input type="checkbox" name="populations[]" value="CDX" id="pop_CDX">
+                        <label for="pop_CDX">CDX</label>
+                        <input type="checkbox" name="populations[]" value="CHB" id="pop_CHB">
+                        <label for="pop_CHB">CHB</label>
+                        <input type="checkbox" name="populations[]" value="CHS" id="pop_CHS">
+                        <label for="pop_CHS">CHS</label>
+                        <input type="checkbox" name="populations[]" value="JPT" id="pop_JPT">
+                        <label for="pop_JPT">JPT</label>
+                        <input type="checkbox" name="populations[]" value="KHV" id="pop_KHV">
+                        <label for="pop_KHV">KHV</label>
+                        <input type="checkbox" name="populations[]" value="CEU" id="pop_CEU">
+                        <label for="pop_CEU">CEU</label>
+                        <input type="checkbox" name="populations[]" value="FIN" id="pop_FIN">
+                        <label for="pop_FIN">FIN</label>
+                        <input type="checkbox" name="populations[]" value="GBR" id="pop_GBR">
+                        <label for="pop_GBR">GBR</label>
+                        <input type="checkbox" name="populations[]" value="IBS" id="pop_IBS">
+                        <label for="pop_IBS">IBS</label>
+                        <input type="checkbox" name="populations[]" value="TSI" id="pop_TSI">
+                        <label for="pop_TSI">TSI</label>
+                        <input type="checkbox" name="populations[]" value="BEB" id="pop_BEB">
+                        <label for="pop_BEB">BEB</label>
+                        <input type="checkbox" name="populations[]" value="GIH" id="pop_GIH">
+                        <label for="pop_GIH">GIH</label>
+                        <input type="checkbox" name="populations[]" value="ITU" id="pop_ITU">
+                        <label for="pop_ITU">ITU</label>
+                        <input type="checkbox" name="populations[]" value="PJL" id="pop_PJL">
+                        <label for="pop_PJL">PJL</label>
+                        <input type="checkbox" name="populations[]" value="STU" id="pop_STU">
+                        <label for="pop_STU">STU</label>
+                    </label>
+                    </div>
+
+                <div class="form-group">
+                    <label style="font-size: 30px;font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; font-weight: bold;">Superpopulations:</label>
+                    <div>
+                    <label style="font-size: 16px; font-weight: bold;">
+                        <input type="checkbox" name="superpopulations[]" value="AFR" id="super_AFR">
+                        <label for="super_AFR">Africa</label>
+                        <input type="checkbox" name="superpopulations[]" value="AMR" id="super_AMR">
+                        <label for="super_AMR">America</label>
+                        <input type="checkbox" name="superpopulations[]" value="EAS" id="super_EAS">
+                        <label for="super_EAS">East Asian</label>
+                        <input type="checkbox" name="superpopulations[]" value="EUR" id="super_EUR">
+                        <label for="super_EUR">European</label>
+                        <input type="checkbox" name="superpopulations[]" value="SAS" id="super_SAS">
+                        <label for="super_SAS">South Asian</label>
+                    </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="snp_id">SNP ID:</label>
+                    <input type="text" class="form-control" id="snp_id" placeholder="Enter SNP ID">
+                </div>
+                    
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+    </div>
+</body>
+</html>
