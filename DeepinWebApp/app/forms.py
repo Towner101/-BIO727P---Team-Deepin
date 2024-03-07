@@ -87,7 +87,7 @@ class SNPSearchForm(BaseForm):
     gene_names = StringField('Gene Names', validators=[Optional()])
     chromosome = SelectField(
         'Chromosome',
-        choices=[('1', '1')],  # Expand as necessary
+        choices=[('1', '1')],  
         validators=[Optional()],
         render_kw={"class": "form-control"}
     )
